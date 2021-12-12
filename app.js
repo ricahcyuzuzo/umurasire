@@ -16,12 +16,6 @@ const brandsRef = db.collection('brands');
 const usersRef = db.collection('users');
 const ordersRef = db.collection('orders');
 
-const signInButton = document.getElementById('signIn');
-
-signInButton.addEventListener('click', () => {
-    console.log('Data')
-});
-
 const storeId = (id) => {
     localStorage.setItem('Id', id);
     console.log(localStorage.getItem('Id'))
@@ -215,19 +209,6 @@ const addAppliances = async () => {
 }
 
 
-const login = () => {
-    // const email = document.getElementById('email').value;
-    // const password = document.getElementById('password').value;
-
-    // const queryEmail = await usersRef.where('email', '==', email);
-    // usersRef.onSnapshot((snapshot) => {
-    //     const data = snapshot.docs.map((doc) => ({
-    //         id: doc.id,
-    //         data: doc.data(),
-    //     }))
-
-    //     console.log(data);
-    // });
-console.log('data')
+const addProductButton = () => {
 
 }

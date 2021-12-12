@@ -261,27 +261,31 @@
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
 		
-		const login = () => {
-
+		const login = (e) => {
+			event.preventDefault();
 			const phone = document.getElementById('phone').value;
 			const password = document.getElementById('password').value;
-
-            axios.post('http://127.0.0.1:7000/api/login', {
-                phone,
-                password,
+			console.log(phone);
+			console.log(password);
+            axios.post('https://farmatalk.herokuapp.com/api/login', {
+                phoneNumber: phone,
+                password: password,
             }).then((res) => {
 				localStorage.setItem('token', res.data.token);
                 localStorage.setItem('isLoggedIn', true);
-                localStorage.setItem('phone', phoneNumber);
+                localStorage.setItem('phone', phone);
                 localStorage.setItem('userType', res.data.user.type);
                 localStorage.setItem('names', res.data.user.name);
+				console.log(res.data.user.type)
                 if(res.data.user.type === 'seller'){
-                    history.push('/index.html');
+                    window.location = './index.html'
                 }else{
-                    history.push('/login.html');
+					alert('Phone or password is incorrect')
+                    window.location='./login.html'
             	}
             }).catch((err) => {
-                alert(err.response.data.message)
+                alert('Phone or password is incorrect')
+				window.location='./login.html'
             })
 		}
 
@@ -293,7 +297,7 @@
 			<h1>Sign in</h1><br><br><br>
 			<input type="text" maxlength="10" placeholder="Phone Number" id="phone" />
 			<input type="password" placeholder="Password" id="password" />
-			<button id="signIn" onclick="login()">Sign In</button>
+			<button id="signIn" onclick="login(event)">Sign In</button>
 		</form>
 	</div>
 	<div class="overlay-container">
