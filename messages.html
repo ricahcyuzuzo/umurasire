@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+</head>
+<body>
+    <a href="./index.html"><button style="padding: 10px; background-color: darkslateblue; color: #fff; border: 0px; cursor: pointer;">Go back</button></a>
+    <h1>Messages from Clients</h1>
+    <div>
+        <div id="table">
+
+        </div>
+        <div style="margin-top: 40px;">
+            <input type='text' id='message' style="padding: 10px; width: 80%; margin-top: 20px;" placeholder="Type message" />
+            <input type="text" id="email" style="padding: 10px; width: 80%; margin-top: 20px;" placeholder="to Email" />
+            <button onclick="sendMessage()" style="padding: 10px; background-color: darkslateblue; color: #fff; border: 0px; cursor: pointer; width: 84%; border-radius: 5px; margin-top: 50px;">Send Message</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize a database
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBe4xOruz9h_ac-ZC6QbWJ1uqzcZZUNfeg",
+            authDomain: "solarshop-e86ad.firebaseapp.com",
+            projectId: "solarshop-e86ad",
+            storageBucket: "solarshop-e86ad.appspot.com",
+            messagingSenderId: "578561483387",
+            appId: "1:578561483387:web:833c3926b184611a07b8de",
+            measurementId: "G-2J2C3SW8GY"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        const chatsRef = db.collection('chats');
+
+        chatsRef.onSnapshot((snapshot) => {
+            const data = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+            }))
+
+            console.log(data);
+            const output = document.getElementById('table');
+            output.innerHTML = data.map((item, idx) => {
+                return (`
+                    <div>
+                        <div style="padding: 10px; background-color: ${item.data.email === undefined ? 'green' : '#c4c4c4'}; width:50%; margin-left: ${item.data.email === undefined ? '630px' : '0px'}; ">${item.data.message}</div>
+                        <div style="padding: 10px; background-color: ${item.data.email === undefined ? 'green' : '#c4c4c4'}; width:50%; margin-left: ${item.data.email === undefined ? '630px' : '0px'};">${item.data.email === undefined ? `Admin reply to ${item.data.toEmail}` : item.data.email}</div>
+                    </div>
+                `.replace(',', ''))
+            })
+            console.log(data)
+
+        });
+
+        const sendMessage = () => {
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            chatsRef.add({
+                toEmail: email,
+                message: message,
+                usertype: 'Supplier',
+            }).then(() => {
+                alert('Sent');
+                window.location.href='./messages.html'
+            })
+        }
+    </script>
+</body>
+</html>
