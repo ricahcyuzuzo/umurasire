@@ -15,6 +15,7 @@ const db = firebase.firestore();
 const brandsRef = db.collection('brands');
 const usersRef = db.collection('users');
 const ordersRef = db.collection('orders');
+const stockRef = db.collection('stock');
 
 const storeId = (id) => {
     localStorage.setItem('Id', id);
@@ -130,6 +131,17 @@ ordersRef.onSnapshot((snapshot) => {
         `)
     })
     console.log(data)
+
+});
+
+stockRef.onSnapshot((snapshot) => {
+    const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+    }))
+
+    document.getElementById('stock').innerText = data[0].data.stock;
+
 
 });
 

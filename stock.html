@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock</title>
+</head>
+<body>
+    <a href="./index.html"><button style="padding: 10px; background-color: darkslateblue; color: #fff; border: 0px; cursor: pointer;">Go back</button></a>
+    <h1>Update your Stock</h1>
+    <div>
+        <div style="margin-top: 40px;">
+            <label>Stock Number</label><br>
+            <input type='number' id='stockn' style="padding: 10px; width: 40%; margin-top: 20px;" placeholder="Type message" /><br>
+            <button onclick="updateStock()" style="padding: 10px; background-color: darkslateblue; color: #fff; border: 0px; cursor: pointer; width: 42.6%; border-radius: 5px; margin-top: 50px;">Update Stock</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize a database
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBe4xOruz9h_ac-ZC6QbWJ1uqzcZZUNfeg",
+            authDomain: "solarshop-e86ad.firebaseapp.com",
+            projectId: "solarshop-e86ad",
+            storageBucket: "solarshop-e86ad.appspot.com",
+            messagingSenderId: "578561483387",
+            appId: "1:578561483387:web:833c3926b184611a07b8de",
+            measurementId: "G-2J2C3SW8GY"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        const stockRef = db.collection('stock');
+
+        stockRef.onSnapshot((snapshot) => {
+            const data = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                data: doc.data(),
+            }))
+    
+        document.getElementById('stockn').value= data[0].data.stock;
+
+
+        });
+
+        const updateStock = () => {
+            stockRef.doc('fGJdvwiOLDqzqC35KLuo').update({stock: document.getElementById('stockn').value}).then(() => {
+                alert('Stock Updated');
+                window.location.href='index.html';
+            })
+        }
+    </script>
+</body>
+</html>
